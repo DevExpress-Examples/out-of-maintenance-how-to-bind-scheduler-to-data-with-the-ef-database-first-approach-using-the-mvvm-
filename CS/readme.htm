@@ -1,0 +1,33 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>Implementing MVVM - Developer Express Example</title>
+<style>
+html, body, form 
+{
+	font-family: Tahoma, Arial, Verdana;
+    font-size: small;
+    color: #303440;
+}
+h1 {
+	font-size: 125%;
+	font-weight: normal;
+	color: Black;
+	letter-spacing: 101%;
+}
+</style>
+</head>
+<body>
+<h1>Developer Express Example<br />Implementing MVVM</h1>
+<p>This example illustrates how to implement an MVVM pattern (see Model View ViewModel (http://en.wikipedia.org/wiki/Model_View_ViewModel)) in a scheduling application. Model is represented by the Car and CarScheduling class generated via an Entity Framework (http://en.wikipedia.org/wiki/Entity_Framework) layer. The SchedulerViewModel class represents a view model. It exposes model collections (for appointments and resources) to the view that is not defined separately integrated into the MainWindow.xaml markup to keep things simple. In addition, we define two commands in the view model: AppointmentsModifiedCommand and FetchAppointmentsCommand. We cannot use the EventToCommand (http://adammills.wordpress.com/2011/02/14/eventtocommand-action-mvvm-glue/) from the MVVM Light Toolkit (http://mvvmlight.codeplex.com/) to transform the corresponding SchedulerStorage events to these commands because these events are not routed (they are defined as regular CLR events). Thus, we have created a special SchedulerHelper class with the corresponding attached properties to be able to map events to commands in XAML in the following manner:
+        <dxsch:SchedulerControl Name="schedulerControl1" ActiveViewType="Timeline" GroupType="Resource"
+                                local:SchedulerHelper.AppointmentsModifiedCommand="{Binding AppointmentsModifiedCommand}"
+                                local:SchedulerHelper.FetchAppointmentsCommand="{Binding FetchAppointmentsCommand}">
+        ...
+
+Note: This approach is illustrated in the http://www.devexpress.com/scid=Q419179 ticket. Alternatively, you can implement the approach from the http://www.devexpress.com/scid=Q430988 ticket, i.e., use a custom-made CLREventTrigger class.
+We handle the SchedulerStorage.FetchAppointments Event (http://documentation.devexpress.com/#WPF/DevExpressXpfSchedulerSchedulerStorage_FetchAppointmentstopic) in the manner described in the http://www.devexpress.com/scid=E4668 example.</p>
+<p>You can find sample updates and versions for different programming languages here:<br /><a href="http://www.devexpress.com/example=E4670">http://www.devexpress.com/example=E4670</a>.</p>
+</body>
+</html>

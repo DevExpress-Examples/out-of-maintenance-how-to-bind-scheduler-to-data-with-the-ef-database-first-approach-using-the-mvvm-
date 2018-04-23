@@ -1,0 +1,67 @@
+﻿<Window x:Class="SchedulerMVVMScenarioWpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:dxsch="http://schemas.devexpress.com/winfx/2008/xaml/scheduler"
+        xmlns:local="clr-namespace:SchedulerMVVMScenarioWpf"
+          xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
+        Title="MainWindow" Height="350" Width="525">
+    <Window.DataContext>
+        <local:SchedulerViewModel/>
+    </Window.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+        	<RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <dxsch:SchedulerControl Grid.Row="0" Name="schedulerControl1" ActiveViewType="Timeline" GroupType="Resource" >
+            <dxsch:SchedulerControl.Storage>
+                <dxsch:SchedulerStorage >
+                    <dxmvvm:Interaction.Behaviors>
+                        <dxmvvm:EventToCommand EventName="FetchAppointments" Command="{Binding FetchAppointmentsCommand}" PassEventArgsToCommand="True" >
+                        </dxmvvm:EventToCommand>
+                        <dxmvvm:EventToCommand EventName="AppointmentsInserted" Command="{Binding AppointmentsModifiedCommand}"  PassEventArgsToCommand="True">
+                        </dxmvvm:EventToCommand>
+                        <dxmvvm:EventToCommand EventName="AppointmentsChanged" Command="{Binding AppointmentsModifiedCommand}"  PassEventArgsToCommand="True">
+                        </dxmvvm:EventToCommand>
+                        <dxmvvm:EventToCommand EventName="AppointmentsDeleted" Command="{Binding AppointmentsModifiedCommand}"  PassEventArgsToCommand="True">
+                        </dxmvvm:EventToCommand>
+                    </dxmvvm:Interaction.Behaviors>
+                    <dxsch:SchedulerStorage.AppointmentStorage>
+                        <dxsch:AppointmentStorage DataSource="{Binding Appointments}" ResourceSharing="True">
+                            <dxsch:AppointmentStorage.Mappings>
+                                <dxsch:AppointmentMapping
+                                    Start="StartTime"
+                                    End="EndTime"
+                                    Subject="Subject"
+                                    Description="Description"
+                                    Location="Location"
+                                    AllDay="AllDay"
+                                    Label="Label"
+                                    Status="Status"
+                                    Type="EventType"
+                                    RecurrenceInfo="RecurrenceInfo"
+                                    ReminderInfo="ReminderInfo"
+                                    ResourceId="CarId"/>
+                            </dxsch:AppointmentStorage.Mappings>
+                            <dxsch:AppointmentStorage.CustomFieldMappings>
+                                <dxsch:SchedulerCustomFieldMapping Member="Price" Name="cfPrice" ValueType="Decimal"/>
+                            </dxsch:AppointmentStorage.CustomFieldMappings>
+                        </dxsch:AppointmentStorage>
+                    </dxsch:SchedulerStorage.AppointmentStorage>
+                    <dxsch:SchedulerStorage.ResourceStorage>
+                        <dxsch:ResourceStorage DataSource="{Binding Resources}">
+                            <dxsch:ResourceStorage.Mappings>
+                                <dxsch:ResourceMapping
+                                    Id="ID"
+                                    Caption="Model"/>
+                            </dxsch:ResourceStorage.Mappings>
+                        </dxsch:ResourceStorage>
+                    </dxsch:SchedulerStorage.ResourceStorage>
+                </dxsch:SchedulerStorage>
+            </dxsch:SchedulerControl.Storage>
+            <dxsch:SchedulerControl.TimelineView>
+                <dxsch:TimelineView ResourcesPerPage="3"/>
+            </dxsch:SchedulerControl.TimelineView>
+        </dxsch:SchedulerControl>
+        
+    </Grid>
+</Window>
